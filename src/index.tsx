@@ -6,9 +6,20 @@ import store from './app/store'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+import { MsalProvider } from '@azure/msal-react'
+import { PublicClientApplication, Configuration } from '@azure/msal-browser'
+
 import './index.css'
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core'
 import { blue, pink } from '@material-ui/core/colors'
+
+const azureConfig: Configuration = {
+  auth: {
+    clientId: process.env.REACT_APP_AZURE_CLIENT_ID as string,
+    authority: 'https://login.microsoftonline.com/' + process.env.REACT_APP_AZURE_TENANT_ID
+  }
+}
+const pca = new PublicClientApplication(azureConfig)
 
 const materialTheme = createMuiTheme({
   palette: {
@@ -24,12 +35,14 @@ const materialTheme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={materialTheme}>
-      <Provider store={store}>
-        <CssBaseline />
-        <App />
-      </Provider>
-    </ThemeProvider>
+    <MsalProvider instance={pca}>
+      <ThemeProvider theme={materialTheme}>
+        <Provider store={store}>
+          <CssBaseline />
+          <App />
+        </Provider>
+      </ThemeProvider>
+    </MsalProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

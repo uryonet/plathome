@@ -1,9 +1,13 @@
 import React from 'react'
 import logo from './logo.svg'
+
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react'
+
 import './App.css'
 import { Button } from '@material-ui/core'
 
 function App() {
+  const { instance } = useMsal()
   return (
     <div className='App'>
       <header className='App-header'>
@@ -19,7 +23,14 @@ function App() {
         >
           Learn React
         </a>
-        <Button variant='contained' color='primary'>テスト</Button>
+        <AuthenticatedTemplate>
+          <p>ログインしています。</p>
+          <Button variant='contained' color='secondary' onClick={() => instance.logoutRedirect()}>ログアウト</Button>
+        </AuthenticatedTemplate>
+        <UnauthenticatedTemplate>
+          <p>ログインしていません。</p>
+          <Button variant='contained' color='primary' onClick={() => instance.loginRedirect()}>ログイン</Button>
+        </UnauthenticatedTemplate>
       </header>
     </div>
   )
