@@ -6,7 +6,7 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/
 import './App.css'
 import { Button } from '@material-ui/core'
 
-function App() {
+const App: React.FC = () => {
   const { instance } = useMsal()
   return (
     <div className='App'>
