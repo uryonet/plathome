@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import store from './app/store'
 
 import App from './App'
+import MainAppBar from './components/MainAppBar'
 import reportWebVitals from './reportWebVitals'
 
 import { MsalProvider } from '@azure/msal-react'
@@ -40,6 +41,7 @@ ReactDOM.render(
         <Provider store={store}>
           <CssBaseline />
           <App />
+          <MainAppBar />
         </Provider>
       </ThemeProvider>
     </MsalProvider>
