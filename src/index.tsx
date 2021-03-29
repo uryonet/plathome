@@ -1,16 +1,35 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import './index.css'
+import store from './app/store'
+
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import store from './app/store'
+
+import './index.css'
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core'
+import { blue, pink } from '@material-ui/core/colors'
+
+const materialTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: blue[200]
+    },
+    secondary: {
+      main: pink[200]
+    },
+    type: 'dark'
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ThemeProvider theme={materialTheme}>
+      <Provider store={store}>
+        <CssBaseline />
+        <App />
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
