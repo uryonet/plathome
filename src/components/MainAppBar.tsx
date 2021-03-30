@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useMsal } from '@azure/msal-react'
 import {
   AppBar,
@@ -30,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     margin: '0 auto'
+  },
+  routeLink: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary
   }
 }))
 
@@ -44,24 +49,30 @@ const MainAppBar: React.FC = () => {
   const menuList = () => (
     <Container onClick={toggleDrawer(false)}>
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
-          <ListItemText>ホーム</ListItemText>
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AssignmentTurnedIn />
-          </ListItemIcon>
-          <ListItemText>タスク</ListItemText>
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <MenuBook />
-          </ListItemIcon>
-          <ListItemText>ノート</ListItemText>
-        </ListItem>
+        <Link to="/" className={classes.routeLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <Home />
+            </ListItemIcon>
+            <ListItemText>ホーム</ListItemText>
+          </ListItem>
+        </Link>
+        <Link to="/tasks" className={classes.routeLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <AssignmentTurnedIn />
+            </ListItemIcon>
+            <ListItemText>タスク</ListItemText>
+          </ListItem>
+        </Link>
+        <Link to="notes" className={classes.routeLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <MenuBook />
+            </ListItemIcon>
+            <ListItemText>ノート</ListItemText>
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>

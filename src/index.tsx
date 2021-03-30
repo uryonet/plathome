@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './app/store'
 
@@ -39,9 +40,11 @@ ReactDOM.render(
     <MsalProvider instance={pca}>
       <ThemeProvider theme={materialTheme}>
         <Provider store={store}>
-          <CssBaseline />
-          <App />
-          <MainAppBar />
+          <BrowserRouter>
+            <CssBaseline />
+            <App />
+            <MainAppBar />
+          </BrowserRouter>
         </Provider>
       </ThemeProvider>
     </MsalProvider>
