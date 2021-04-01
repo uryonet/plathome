@@ -8,7 +8,7 @@ import App from './App'
 import MainAppBar from './components/MainAppBar'
 import reportWebVitals from './reportWebVitals'
 
-import { MsalProvider } from '@azure/msal-react'
+import { MsalProvider, AuthenticatedTemplate } from '@azure/msal-react'
 import { PublicClientApplication, Configuration } from '@azure/msal-browser'
 
 import './index.css'
@@ -43,7 +43,9 @@ ReactDOM.render(
           <BrowserRouter>
             <CssBaseline />
             <App />
-            <MainAppBar />
+            <AuthenticatedTemplate>
+              <MainAppBar />
+            </AuthenticatedTemplate>
           </BrowserRouter>
         </Provider>
       </ThemeProvider>

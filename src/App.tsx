@@ -5,11 +5,11 @@ import Home from './Home'
 import Tasks from './Tasks'
 import Notes from './Notes'
 
-import './App.css'
+import { Container } from '@material-ui/core'
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <Container className="container">
       <Switch>
         <PrivateRoute path="/tasks">
           <Tasks />
@@ -21,7 +21,7 @@ const App: React.FC = () => {
           <Home />
         </Route>
       </Switch>
-    </div>
+    </Container>
   )
 }
 
