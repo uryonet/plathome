@@ -19,18 +19,11 @@ import { AssignmentTurnedIn, Home, Menu, MenuBook, MoreVert } from '@material-ui
 const useStyles = makeStyles((theme) => ({
   appBar: {
     top: 'auto',
-    bottom: 0
+    bottom: 0,
+    zIndex: 0
   },
   grow: {
     flexGrow: 1
-  },
-  fabButton: {
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto'
   },
   routeLink: {
     textDecoration: 'none',
