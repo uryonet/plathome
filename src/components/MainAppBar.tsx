@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Switch } from 'react-router-dom'
 import { useMsal } from '@azure/msal-react'
 import {
   AppBar,
@@ -15,6 +15,8 @@ import {
   Toolbar
 } from '@material-ui/core'
 import { AssignmentTurnedIn, Home, Menu, MenuBook, MoreVert } from '@material-ui/icons'
+import PrivateRoute from '../lib/PrivateRoute'
+import NewTaskDialog from '../features/tasks/NewTaskDialog'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -96,6 +98,11 @@ const MainAppBar: React.FC = () => {
       >
         {menuList()}
       </SwipeableDrawer>
+      <Switch>
+        <PrivateRoute path="/tasks">
+          <NewTaskDialog />
+        </PrivateRoute>
+      </Switch>
     </AppBar>
   )
 }
