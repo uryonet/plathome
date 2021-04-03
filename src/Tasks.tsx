@@ -6,11 +6,11 @@ import NewTaskDialog from './components/NewTaskDialog'
 const useStyles = makeStyles({
   taskFabButton: {
     position: 'absolute',
-    bottom: 28,
+    bottom: -28,
     left: 0,
     right: 0,
-    zIndex: 20,
-    margin: 'auto'
+    margin: 'auto',
+    zIndex: 20
   }
 })
 
