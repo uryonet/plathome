@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './lib/PrivateRoute'
 import Home from './Home'
-import Tasks from './Tasks'
+import Tasks from './features/tasks/Tasks'
 import Notes from './Notes'
 
 import { Container } from '@material-ui/core'
