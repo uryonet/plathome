@@ -7,13 +7,13 @@ const Tasks: React.FC = () => {
   const { tasksList } = useSelector(selectTasks)
 
   const renderTaskList: JSX.Element[] = []
-  tasksList.map((task) => {
+  tasksList.map((task, index) => {
     return renderTaskList.push(
       <>
+        {index !== 0 && <Divider />}
         <ListItem>
           <ListItemText primary={task.title} />
         </ListItem>
-        <Divider light />
       </>
     )
   })
