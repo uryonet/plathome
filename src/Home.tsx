@@ -1,6 +1,7 @@
 import React from 'react'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react'
 import { Button, Box } from '@material-ui/core'
+import { getUserDetails } from './lib/GraphService'
 
 const Home: React.FC = () => {
   const { instance } = useMsal()
@@ -14,6 +15,7 @@ const Home: React.FC = () => {
           <Button variant="contained" color="secondary" onClick={() => instance.logoutRedirect()}>
             ログアウト
           </Button>
+          <Button onClick={() => console.log(getUserDetails())}>test</Button>
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
           <p>ログインしていません。</p>
