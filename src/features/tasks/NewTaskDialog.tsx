@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addTask } from './tasksSlice'
 import {
   Button,
   Dialog,
@@ -40,7 +39,6 @@ const NewTaskDialog: React.FC = () => {
 
   const handleClickDialogAdd = () => {
     if (inputTask) {
-      dispatch(addTask(inputTask))
     }
     setOpen(false)
     setInputTask('')

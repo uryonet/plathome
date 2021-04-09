@@ -1,30 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
-
-type Task = {
-  title: string
-}
+import { AppThunk } from '../../app/store'
+import { getTaskLists, getTasks } from '../../lib/GraphService'
+import { TodoTask } from 'microsoft-graph'
 
 type TasksState = {
-  tasksList: Task[]
+  tasks: TodoTask[]
 }
 
 const initialState: TasksState = {
-  tasksList: []
+  tasks: []
 }
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<string>) => {
-      const task: Task = { title: action.payload }
-      state.tasksList.push(task)
+    setTasks: (state, action: PayloadAction<TodoTask[]>) => {
+      state.tasks = action.payload
     }
   }
 })
 
-export const { addTask } = tasksSlice.actions
+export const { setTasks } = tasksSlice.actions
 export default tasksSlice.reducer
 
 export const selectTasks = (state: RootState) => state.tasks
+
+export const fetchTasksList = (): AppThunk => async (dispatch) => {
+  try {
+    const taskLists = await getTaskLists()
+    const tasks = await getTasks(taskLists[0].id)
+    dispatch(setTasks(tasks))
+  } catch (e) {
+    console.log(e)
+  }
+}

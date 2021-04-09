@@ -15,7 +15,6 @@ const Home: React.FC = () => {
           <Button variant="contained" color="secondary" onClick={() => instance.logoutRedirect()}>
             ログアウト
           </Button>
-          <Button onClick={() => console.log(getUserDetails())}>test</Button>
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
           <p>ログインしていません。</p>
