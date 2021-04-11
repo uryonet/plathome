@@ -51,12 +51,16 @@ const NewTaskDialog: React.FC = () => {
     setInputTask('')
   }
 
+  const handleCloseArea = () => {
+    setOpen(false)
+  }
+
   return (
     <>
       <Fab className={styles.fabButton} color="secondary" onClick={handleClickAdd}>
         <Add />
       </Fab>
-      <Dialog open={open}>
+      <Dialog open={open} onClose={handleCloseArea}>
         <DialogTitle>タスク追加</DialogTitle>
         <DialogContent>
           <form noValidate autoComplete="off">
