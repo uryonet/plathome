@@ -26,11 +26,19 @@ export const tasksSlice = createSlice({
     },
     addTask: (state, action: PayloadAction<TodoTask>) => {
       state.tasks.unshift(action.payload)
+    },
+    toggleStatus: (state, action: PayloadAction<TodoTask>) => {
+      const index = state.tasks.findIndex((task) => task.id === action.payload.id)
+      if (action.payload.status === 'completed') {
+        state.tasks[index].status = 'notStarted'
+      } else {
+        state.tasks[index].status = 'completed'
+      }
     }
   }
 })
 
-export const { setTaskListId, setTasks, addTask } = tasksSlice.actions
+export const { setTaskListId, setTasks, addTask, toggleStatus } = tasksSlice.actions
 export default tasksSlice.reducer
 
 export const selectTasks = (state: RootState) => state.tasks

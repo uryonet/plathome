@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTasks, selectTasks } from './tasksSlice'
-import { Box, Checkbox, Divider, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core'
+import { fetchTasks, selectTasks, toggleStatus } from './tasksSlice'
+import { Box, Checkbox, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core'
+import { TodoTask } from 'microsoft-graph'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
@@ -10,27 +11,33 @@ const Tasks: React.FC = () => {
   useEffect(() => {
     console.log('タスク一覧の取得処理')
     dispatch(fetchTasks())
-  }, [])
+  }, [dispatch])
+
+  const handleClickToggle = (task: TodoTask) => () => {
+    dispatch(toggleStatus(task))
+  }
 
   const renderTaskList = (completed: boolean) => {
-    const render: JSX.Element[] = []
+    let render: JSX.Element[] = []
     tasks.map((task) => {
-      if ((task.status === 'completed') === completed) {
-        return render.push(
-          <ListItem key={task.id} dense button>
-            <ListItemIcon>
-              <Checkbox edge='start' checked={task.status === 'completed'} />
-            </ListItemIcon>
-            <ListItemText primary={task.title} />
-          </ListItem>
-        )
-      }
+      return render.push(
+        <React.Fragment key={task.id}>
+          {(task.status === 'completed') === completed && (
+            <ListItem dense button onClick={handleClickToggle(task)}>
+              <ListItemIcon>
+                <Checkbox edge="start" checked={task.status === 'completed'} />
+              </ListItemIcon>
+              <ListItemText primary={task.title} />
+            </ListItem>
+          )}
+        </React.Fragment>
+      )
     })
     return render
   }
 
   return (
-    <Box className='task'>
+    <Box className="task">
       <h1>Tasks</h1>
       <Paper square>
         <List>{renderTaskList(false)}</List>
