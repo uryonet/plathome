@@ -25,3 +25,9 @@ export const getTasks = async (listId: string | undefined): Promise<TodoTask[]> 
   const res =  await client.api('/me/todo/lists/' + listId + '/tasks').get()
   return res.value
 }
+
+export const postTask = async (listId: string | undefined): Promise<TodoTask> => {
+  const client = await getAuthClient()
+  const res =  await client.api('/me/todo/lists/' + listId + '/tasks').get()
+  return res.value
+}

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTasksList, selectTasks } from './tasksSlice'
+import { fetchTasks, selectTasks } from './tasksSlice'
 import { Box, Divider, List, ListItem, ListItemText, Paper } from '@material-ui/core'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
-  const { tasks } = useSelector(selectTasks)
+  const { taskListId, tasks } = useSelector(selectTasks)
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')
-    dispatch(fetchTasksList())
+    dispatch(fetchTasks())
   }, [])
 
   const renderTaskList: JSX.Element[] = []
