@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAddTask, selectTasks } from './tasksSlice'
+import { TodoTask } from 'microsoft-graph'
 import {
   Button,
   Dialog,
@@ -27,6 +29,7 @@ const NewTaskDialog: React.FC = () => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [inputTask, setInputTask] = useState('')
+  const { taskListId } = useSelector(selectTasks)
   const styles = useStyles()
 
   const changeInputTask = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +42,10 @@ const NewTaskDialog: React.FC = () => {
 
   const handleClickDialogAdd = () => {
     if (inputTask) {
+      const todoTask: TodoTask = {
+        title: inputTask
+      }
+      dispatch(fetchAddTask(taskListId, todoTask))
     }
     setOpen(false)
     setInputTask('')

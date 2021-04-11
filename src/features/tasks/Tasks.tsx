@@ -5,7 +5,7 @@ import { Box, Divider, List, ListItem, ListItemText, Paper } from '@material-ui/
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
-  const { taskListId, tasks } = useSelector(selectTasks)
+  const { tasks } = useSelector(selectTasks)
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
 import { AppThunk } from '../../app/store'
-import { getTaskLists, getTasks } from '../../lib/GraphService'
+import { getTaskLists, getTasks, postTask } from '../../lib/GraphService'
 import { TodoTask } from 'microsoft-graph'
 
 type TasksState = {
@@ -25,7 +25,7 @@ export const tasksSlice = createSlice({
       state.tasks = action.payload
     },
     addTask: (state, action: PayloadAction<TodoTask>) => {
-      state.tasks.push(action.payload)
+      state.tasks.unshift(action.payload)
     }
   }
 })
@@ -44,6 +44,15 @@ export const fetchTasks = (): AppThunk => async (dispatch) => {
       const tasks = await getTasks(taskListId)
       dispatch(setTasks(tasks))
     }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchAddTask = (taskListId: string, todoTask: TodoTask): AppThunk => async (dispatch) => {
+  try {
+    const addedTask = await postTask(taskListId, todoTask)
+    dispatch(addTask(addedTask))
   } catch (e) {
     console.log(e)
   }
