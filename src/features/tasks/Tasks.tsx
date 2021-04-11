@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTasks, selectTasks } from './tasksSlice'
-import { Box, Divider, List, ListItem, ListItemText, Paper } from '@material-ui/core'
+import { Box, Checkbox, Divider, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
@@ -12,22 +12,33 @@ const Tasks: React.FC = () => {
     dispatch(fetchTasks())
   }, [])
 
-  const renderTaskList: JSX.Element[] = []
-  tasks.map((task, index) => {
-    return renderTaskList.push(
-      <React.Fragment key={task.id}>
-        {index !== 0 && <Divider />}
-        <ListItem>
-          <ListItemText primary={task.title} />
-        </ListItem>
-      </React.Fragment>
-    )
-  })
+  const renderTaskList = (completed: boolean) => {
+    const render: JSX.Element[] = []
+    tasks.map((task) => {
+      if ((task.status === 'completed') === completed) {
+        return render.push(
+          <ListItem key={task.id} dense button>
+            <ListItemIcon>
+              <Checkbox edge='start' checked={task.status === 'completed'} />
+            </ListItemIcon>
+            <ListItemText primary={task.title} />
+          </ListItem>
+        )
+      }
+    })
+    return render
+  }
 
   return (
-    <Box className="home">
+    <Box className='task'>
       <h1>Tasks</h1>
-      <Paper square>{tasks.length !== 0 && <List>{renderTaskList}</List>}</Paper>
+      <Paper square>
+        <List>{renderTaskList(false)}</List>
+      </Paper>
+      <h4>完了済み</h4>
+      <Paper square>
+        <List>{renderTaskList(true)}</List>
+      </Paper>
     </Box>
   )
 }

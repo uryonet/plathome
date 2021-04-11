@@ -1,7 +1,6 @@
 import React from 'react'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react'
 import { Button, Box } from '@material-ui/core'
-import { getUserDetails } from './lib/GraphService'
 
 const Home: React.FC = () => {
   const { instance } = useMsal()
