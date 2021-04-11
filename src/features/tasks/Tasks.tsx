@@ -1,25 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTasksList, selectTasks } from './tasksSlice'
-import { Box, Button, Divider, List, ListItem, ListItemText, Paper } from '@material-ui/core'
+import { Box, Divider, List, ListItem, ListItemText, Paper } from '@material-ui/core'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
   const { tasks } = useSelector(selectTasks)
 
-  const onClickTestBtn = () => {
+  useEffect(() => {
+    console.log('タスク一覧の取得処理')
     dispatch(fetchTasksList())
-  }
+  }, [])
 
   const renderTaskList: JSX.Element[] = []
   tasks.map((task, index) => {
     return renderTaskList.push(
-      <>
+      <React.Fragment key={task.id}>
         {index !== 0 && <Divider />}
         <ListItem>
           <ListItemText primary={task.title} />
         </ListItem>
-      </>
+      </React.Fragment>
     )
   })
 
@@ -27,7 +28,6 @@ const Tasks: React.FC = () => {
     <Box className="home">
       <h1>Tasks</h1>
       <Paper square>{tasks.length !== 0 && <List>{renderTaskList}</List>}</Paper>
-      <Button onClick={onClickTestBtn}>テスト用ボタン</Button>
     </Box>
   )
 }
