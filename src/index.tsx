@@ -9,19 +9,11 @@ import MainAppBar from './components/MainAppBar'
 import reportWebVitals from './reportWebVitals'
 
 import { MsalProvider, AuthenticatedTemplate } from '@azure/msal-react'
-import { PublicClientApplication, Configuration } from '@azure/msal-browser'
+import { msalInstance } from './lib/AuthService'
 
 import './index.css'
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core'
 import { blue, pink } from '@material-ui/core/colors'
-
-const azureConfig: Configuration = {
-  auth: {
-    clientId: process.env.REACT_APP_AZURE_CLIENT_ID as string,
-    authority: 'https://login.microsoftonline.com/' + process.env.REACT_APP_AZURE_TENANT_ID
-  }
-}
-const pca = new PublicClientApplication(azureConfig)
 
 const materialTheme = createMuiTheme({
   palette: {
@@ -37,7 +29,7 @@ const materialTheme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <MsalProvider instance={pca}>
+    <MsalProvider instance={msalInstance}>
       <ThemeProvider theme={materialTheme}>
         <Provider store={store}>
           <BrowserRouter>

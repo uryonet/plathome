@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addTask } from './tasksSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAddTask, selectTasks } from './tasksSlice'
+import { TodoTask } from 'microsoft-graph'
 import {
   Button,
   Dialog,
@@ -28,6 +29,7 @@ const NewTaskDialog: React.FC = () => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [inputTask, setInputTask] = useState('')
+  const { taskListId } = useSelector(selectTasks)
   const styles = useStyles()
 
   const changeInputTask = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +42,17 @@ const NewTaskDialog: React.FC = () => {
 
   const handleClickDialogAdd = () => {
     if (inputTask) {
-      dispatch(addTask(inputTask))
+      const todoTask: TodoTask = {
+        title: inputTask
+      }
+      dispatch(fetchAddTask(taskListId, todoTask))
     }
     setOpen(false)
     setInputTask('')
+  }
+
+  const handleCloseArea = () => {
+    setOpen(false)
   }
 
   return (
@@ -51,7 +60,7 @@ const NewTaskDialog: React.FC = () => {
       <Fab className={styles.fabButton} color="secondary" onClick={handleClickAdd}>
         <Add />
       </Fab>
-      <Dialog open={open}>
+      <Dialog open={open} onClose={handleCloseArea}>
         <DialogTitle>タスク追加</DialogTitle>
         <DialogContent>
           <form noValidate autoComplete="off">
