@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTasks, selectTasks, toggleStatus } from './tasksSlice'
-import { Box, Checkbox, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core'
+import { fetchTasks, fetchToggleStatus, selectTasks } from './tasksSlice'
 import { TodoTask } from 'microsoft-graph'
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper
+} from '@material-ui/core'
+import { KeyboardArrowRight } from '@material-ui/icons'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
-  const { tasks } = useSelector(selectTasks)
+  const { taskListId, tasks } = useSelector(selectTasks)
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')
@@ -14,7 +25,7 @@ const Tasks: React.FC = () => {
   }, [dispatch])
 
   const handleClickToggle = (task: TodoTask) => () => {
-    dispatch(toggleStatus(task))
+    dispatch(fetchToggleStatus(taskListId, task))
   }
 
   const renderTaskList = (completed: boolean) => {
@@ -28,6 +39,11 @@ const Tasks: React.FC = () => {
                 <Checkbox edge="start" checked={task.status === 'completed'} />
               </ListItemIcon>
               <ListItemText primary={task.title} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end">
+                  <KeyboardArrowRight />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           )}
         </React.Fragment>
