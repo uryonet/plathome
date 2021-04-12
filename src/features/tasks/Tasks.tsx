@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
-import { fetchTasks, selectTasks, toggleStatus } from './tasksSlice'
+import { fetchTasks, fetchToggleStatus, selectTasks } from './tasksSlice'
 import { TodoTask } from 'microsoft-graph'
 import {
   Box,
@@ -18,7 +17,7 @@ import { KeyboardArrowRight } from '@material-ui/icons'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
-  const { tasks } = useSelector(selectTasks)
+  const { taskListId, tasks } = useSelector(selectTasks)
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')
@@ -26,7 +25,7 @@ const Tasks: React.FC = () => {
   }, [dispatch])
 
   const handleClickToggle = (task: TodoTask) => () => {
-    dispatch(toggleStatus(task))
+    dispatch(fetchToggleStatus(taskListId, task))
   }
 
   const renderTaskList = (completed: boolean) => {

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
 import { AppThunk } from '../../app/store'
-import { getTaskLists, getTasks, postTask } from '../../lib/GraphService'
+import { getTaskLists, getTasks, patchTask, postTask } from '../../lib/GraphService'
 import { TodoTask } from 'microsoft-graph'
 
 type TasksState = {
@@ -29,11 +29,7 @@ export const tasksSlice = createSlice({
     },
     toggleStatus: (state, action: PayloadAction<TodoTask>) => {
       const index = state.tasks.findIndex((task) => task.id === action.payload.id)
-      if (action.payload.status === 'completed') {
-        state.tasks[index].status = 'notStarted'
-      } else {
-        state.tasks[index].status = 'completed'
-      }
+      state.tasks[index].status = action.payload.status === 'completed' ? 'notStarted' : 'completed'
     }
   }
 })
@@ -61,6 +57,20 @@ export const fetchAddTask = (taskListId: string, todoTask: TodoTask): AppThunk =
   try {
     const addedTask = await postTask(taskListId, todoTask)
     dispatch(addTask(addedTask))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchToggleStatus = (taskListId: string, todoTask: TodoTask): AppThunk => async (dispatch) => {
+  try {
+    if (todoTask.id) {
+      dispatch(toggleStatus(todoTask))
+      const updateTask: TodoTask = {
+        status: todoTask.status === 'completed' ? 'notStarted' : 'completed'
+      }
+      await patchTask(taskListId, todoTask.id, updateTask)
+    }
   } catch (e) {
     console.log(e)
   }
