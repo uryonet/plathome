@@ -1,8 +1,20 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 import { fetchTasks, selectTasks, toggleStatus } from './tasksSlice'
-import { Box, Checkbox, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core'
 import { TodoTask } from 'microsoft-graph'
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper
+} from '@material-ui/core'
+import { KeyboardArrowRight } from '@material-ui/icons'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
@@ -28,6 +40,11 @@ const Tasks: React.FC = () => {
                 <Checkbox edge="start" checked={task.status === 'completed'} />
               </ListItemIcon>
               <ListItemText primary={task.title} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end">
+                  <KeyboardArrowRight />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           )}
         </React.Fragment>
