@@ -61,7 +61,9 @@ const Tasks: React.FC = () => {
   return (
     <Box className="task">
       <Switch>
-        <PrivateRoute path={`${match.path}/:taskId`} component={Task} />
+        <PrivateRoute path={`${match.path}/:taskId`}>
+          <Task />
+        </PrivateRoute>
         <PrivateRoute path={match.path}>
           <h1>Tasks</h1>
           <Paper square>
