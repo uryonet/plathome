@@ -6,15 +6,20 @@ import Tasks from './features/tasks/Tasks'
 import Notes from './Notes'
 
 import { Container } from '@material-ui/core'
-import Task from './features/tasks/Task'
 
 const App: React.FC = () => {
   return (
     <Container className="container">
       <Switch>
-        <PrivateRoute path="/tasks" component={Tasks} />
-        <PrivateRoute path="/notes" component={Notes} />
-        <Route path="/" component={Home} />
+        <PrivateRoute path="/tasks">
+          <Tasks />
+        </PrivateRoute>
+        <PrivateRoute path="/notes">
+          <Notes />
+        </PrivateRoute>
+        <Route path="/">
+          <Home />
+        </Route>
       </Switch>
     </Container>
   )

@@ -38,6 +38,10 @@ code {
     display: none;
 }
 
+.task-detail {
+    padding-top: 30px;
+}
+
 .home-content {
     display: flex;
     flex-direction: column;
