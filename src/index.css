@@ -38,8 +38,8 @@ code {
     display: none;
 }
 
-.task-detail {
-    padding-top: 30px;
+.task-detail-info {
+    padding: 30px 0;
 }
 
 .home-content {
