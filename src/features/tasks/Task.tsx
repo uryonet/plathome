@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { selectTasks } from './tasksSlice'
+import { fetchToggleStatus, selectTasks } from './tasksSlice'
 
 import { TodoTask } from 'microsoft-graph'
-import { Box, TextField } from '@material-ui/core'
+import { Box, Checkbox, TextField } from '@material-ui/core'
 
 interface ParamTypes {
   taskId: string
@@ -12,8 +12,9 @@ interface ParamTypes {
 
 const Task: React.FC = () => {
   const { taskId } = useParams<ParamTypes>()
-  const { tasks } = useSelector(selectTasks)
+  const { taskListId, tasks } = useSelector(selectTasks)
   const [currentTask, setCurrentTask] = useState<TodoTask>({})
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const selectedTask = tasks.find((task) => task.id === taskId)
@@ -22,9 +23,23 @@ const Task: React.FC = () => {
     }
   }, [])
 
+  const handleClickToggle = () => {
+    dispatch(fetchToggleStatus(taskListId, currentTask))
+
+    const task = { ...currentTask }
+    task.status = currentTask.status === 'completed' ? 'notStarted' : 'completed'
+    setCurrentTask(task)
+  }
+
   return (
-    <Box className="task-detail">
-      <TextField fullWidth value={currentTask.title} inputProps={{ style: { fontSize: 24 } }} />
+    <Box className="task-detail" display="flex">
+      <Checkbox edge="start" checked={currentTask.status === 'completed'} onChange={handleClickToggle} />
+      <TextField
+        fullWidth
+        multiline
+        value={currentTask.title}
+        inputProps={{ style: { fontSize: 20, lineHeight: 1.3 } }}
+      />
     </Box>
   )
 }
