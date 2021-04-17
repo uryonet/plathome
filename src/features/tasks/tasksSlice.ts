@@ -30,11 +30,15 @@ export const tasksSlice = createSlice({
     toggleStatus: (state, action: PayloadAction<TodoTask>) => {
       const index = state.tasks.findIndex((task) => task.id === action.payload.id)
       state.tasks[index].status = action.payload.status === 'completed' ? 'notStarted' : 'completed'
+    },
+    updateTask: (state, action: PayloadAction<TodoTask>) => {
+      const index = state.tasks.findIndex((task) => task.id === action.payload.id)
+      state.tasks[index] = action.payload
     }
   }
 })
 
-export const { setTaskListId, setTasks, addTask, toggleStatus } = tasksSlice.actions
+export const { setTaskListId, setTasks, addTask, toggleStatus, updateTask } = tasksSlice.actions
 export default tasksSlice.reducer
 
 export const selectTasks = (state: RootState) => state.tasks
@@ -70,6 +74,17 @@ export const fetchToggleStatus = (taskListId: string, todoTask: TodoTask): AppTh
         status: todoTask.status === 'completed' ? 'notStarted' : 'completed'
       }
       await patchTask(taskListId, todoTask.id, updateTask)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchUpdateTask = (taskListId: string, todoTask: TodoTask): AppThunk => async (dispatch) => {
+  try {
+    if (todoTask.id) {
+      dispatch(updateTask(todoTask))
+      await patchTask(taskListId, todoTask.id, todoTask)
     }
   } catch (e) {
     console.log(e)
