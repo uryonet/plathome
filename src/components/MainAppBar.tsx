@@ -17,6 +17,7 @@ import {
 import { ArrowBack, AssignmentTurnedIn, Home, Menu, MenuBook, MoreVert } from '@material-ui/icons'
 import PrivateRoute from '../lib/PrivateRoute'
 import NewTaskDialog from '../features/tasks/NewTaskDialog'
+import NewSectionDialog from '../features/notes/NewSectionDialog'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -109,6 +110,27 @@ const MainAppBar: React.FC = () => {
             {menuList()}
           </SwipeableDrawer>
           <NewTaskDialog />
+        </PrivateRoute>
+        <PrivateRoute path="/notes">
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
+              <Menu />
+            </IconButton>
+            <div className={classes.grow} />
+            <IconButton edge="end" color="inherit">
+              <MoreVert />
+            </IconButton>
+          </Toolbar>
+          <SwipeableDrawer
+            onClose={toggleDrawer(false)}
+            onOpen={toggleDrawer(true)}
+            open={isShow}
+            anchor="bottom"
+            disableSwipeToOpen={true}
+          >
+            {menuList()}
+          </SwipeableDrawer>
+          <NewSectionDialog />
         </PrivateRoute>
         <PrivateRoute path="/">
           <Toolbar>

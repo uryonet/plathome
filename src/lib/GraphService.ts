@@ -51,8 +51,8 @@ export const getNotebook = async (): Promise<Notebook[]> => {
 
 export const postNotebook = async (): Promise<Notebook> => {
   const client = await getAuthClient()
-  const newNote = { displayName: 'plathome' }
-  return await client.api('/me/onenote/notebooks').post(newNote)
+  const json = { displayName: 'plathome' }
+  return await client.api('/me/onenote/notebooks').post(json)
 }
 
 export const getSections = async (noteId: string): Promise<OnenoteSection[]> => {
@@ -62,4 +62,10 @@ export const getSections = async (noteId: string): Promise<OnenoteSection[]> => 
     .select('id,displayName,createdDateTime')
     .get()
   return res.value
+}
+
+export const postSection = async (noteId: string, sectionName: string): Promise<OnenoteSection> => {
+  const client = await getAuthClient()
+  const json = { displayName: sectionName }
+  return await client.api('/me/onenote/notebooks/' + noteId + '/sections').post(json)
 }
