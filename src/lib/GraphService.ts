@@ -48,3 +48,9 @@ export const getNotebook = async (): Promise<Notebook[]> => {
     .get()
   return res.value
 }
+
+export const postNotebook = async (): Promise<Notebook> => {
+  const client = await getAuthClient()
+  const newNote = { displayName: 'plathome' }
+  return await client.api('/me/onenote/notebooks').post(newNote)
+}
