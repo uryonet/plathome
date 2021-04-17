@@ -20,8 +20,8 @@ import { KeyboardArrowRight } from '@material-ui/icons'
 
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
-  const { taskListId, tasks } = useSelector(selectTasks)
   const match = useRouteMatch()
+  const { taskListId, tasks } = useSelector(selectTasks)
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')
@@ -40,7 +40,7 @@ const Tasks: React.FC = () => {
       return render.push(
         <React.Fragment key={task.id}>
           {(task.status === 'completed') === completed && (
-            <ListItem dense button onClick={handleClickToggle(task)}>
+            <ListItem button onClick={handleClickToggle(task)}>
               <ListItemIcon>
                 <Checkbox edge="start" checked={task.status === 'completed'} />
               </ListItemIcon>
