@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
 import { AppThunk } from '../../app/store'
-import { getTaskLists, getTasks, patchTask, postTask } from '../../lib/GraphService'
+import { deleteTask, getTaskLists, getTasks, patchTask, postTask } from '../../lib/GraphService'
 import { TodoTask } from 'microsoft-graph'
 
 type TasksState = {
@@ -30,11 +30,14 @@ export const tasksSlice = createSlice({
     updateTask: (state, action: PayloadAction<TodoTask>) => {
       const index = state.tasks.findIndex((task) => task.id === action.payload.id)
       state.tasks[index] = action.payload
+    },
+    delTask: (state, action: PayloadAction<string>) => {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload)
     }
   }
 })
 
-export const { setTaskListId, setTasks, addTask, updateTask } = tasksSlice.actions
+export const { setTaskListId, setTasks, addTask, updateTask, delTask } = tasksSlice.actions
 export default tasksSlice.reducer
 
 export const selectTasks = (state: RootState) => state.tasks
@@ -68,6 +71,15 @@ export const fetchUpdateTask = (taskListId: string, todoTask: TodoTask): AppThun
       dispatch(updateTask(todoTask))
       await patchTask(taskListId, todoTask.id, todoTask)
     }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchDelTask = (taskListId: string, taskId: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(delTask(taskId))
+    await deleteTask(taskListId, taskId)
   } catch (e) {
     console.log(e)
   }

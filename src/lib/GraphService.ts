@@ -33,3 +33,8 @@ export const patchTask = async (listId: string, taskId: string, todoTask: TodoTa
   const client = await getAuthClient()
   return await client.api('/me/todo/lists/' + listId + '/tasks/' + taskId).patch(todoTask)
 }
+
+export const deleteTask = async (listId: string, taskId: string) => {
+  const client = await getAuthClient()
+  await client.api('/me/todo/lists/' + listId + '/tasks/' + taskId).delete()
+}
