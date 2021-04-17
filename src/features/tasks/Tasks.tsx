@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTasks, fetchToggleStatus, selectTasks } from './tasksSlice'
+import { Link, Switch, useRouteMatch } from 'react-router-dom'
+import PrivateRoute from '../../lib/PrivateRoute'
+import { fetchTasks, fetchUpdateTask, selectTasks } from './tasksSlice'
+import Task from './Task'
 import { TodoTask } from 'microsoft-graph'
 import {
   Box,
@@ -18,6 +21,7 @@ import { KeyboardArrowRight } from '@material-ui/icons'
 const Tasks: React.FC = () => {
   const dispatch = useDispatch()
   const { taskListId, tasks } = useSelector(selectTasks)
+  const match = useRouteMatch()
 
   useEffect(() => {
     console.log('タスク一覧の取得処理')
@@ -25,7 +29,9 @@ const Tasks: React.FC = () => {
   }, [dispatch])
 
   const handleClickToggle = (task: TodoTask) => () => {
-    dispatch(fetchToggleStatus(taskListId, task))
+    const updateTask = { ...task }
+    updateTask.status = task.status === 'completed' ? 'notStarted' : 'completed'
+    dispatch(fetchUpdateTask(taskListId, updateTask))
   }
 
   const renderTaskList = (completed: boolean) => {
@@ -40,9 +46,11 @@ const Tasks: React.FC = () => {
               </ListItemIcon>
               <ListItemText primary={task.title} />
               <ListItemSecondaryAction>
-                <IconButton edge="end">
-                  <KeyboardArrowRight />
-                </IconButton>
+                <Link to={`${match.url}/${task.id}`}>
+                  <IconButton edge="end">
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </Link>
               </ListItemSecondaryAction>
             </ListItem>
           )}
@@ -54,14 +62,21 @@ const Tasks: React.FC = () => {
 
   return (
     <Box className="task">
-      <h1>Tasks</h1>
-      <Paper square>
-        <List>{renderTaskList(false)}</List>
-      </Paper>
-      <h4>完了済み</h4>
-      <Paper square>
-        <List>{renderTaskList(true)}</List>
-      </Paper>
+      <Switch>
+        <PrivateRoute path={`${match.path}/:taskId`}>
+          <Task />
+        </PrivateRoute>
+        <PrivateRoute path={match.path}>
+          <h1>Tasks</h1>
+          <Paper square>
+            <List>{renderTaskList(false)}</List>
+          </Paper>
+          <h4>完了済み</h4>
+          <Paper square>
+            <List>{renderTaskList(true)}</List>
+          </Paper>
+        </PrivateRoute>
+      </Switch>
     </Box>
   )
 }
