@@ -27,10 +27,6 @@ export const tasksSlice = createSlice({
     addTask: (state, action: PayloadAction<TodoTask>) => {
       state.tasks.unshift(action.payload)
     },
-    toggleStatus: (state, action: PayloadAction<TodoTask>) => {
-      const index = state.tasks.findIndex((task) => task.id === action.payload.id)
-      state.tasks[index].status = action.payload.status === 'completed' ? 'notStarted' : 'completed'
-    },
     updateTask: (state, action: PayloadAction<TodoTask>) => {
       const index = state.tasks.findIndex((task) => task.id === action.payload.id)
       state.tasks[index] = action.payload
@@ -38,7 +34,7 @@ export const tasksSlice = createSlice({
   }
 })
 
-export const { setTaskListId, setTasks, addTask, toggleStatus, updateTask } = tasksSlice.actions
+export const { setTaskListId, setTasks, addTask, updateTask } = tasksSlice.actions
 export default tasksSlice.reducer
 
 export const selectTasks = (state: RootState) => state.tasks
@@ -61,20 +57,6 @@ export const fetchAddTask = (taskListId: string, todoTask: TodoTask): AppThunk =
   try {
     const addedTask = await postTask(taskListId, todoTask)
     dispatch(addTask(addedTask))
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const fetchToggleStatus = (taskListId: string, todoTask: TodoTask): AppThunk => async (dispatch) => {
-  try {
-    if (todoTask.id) {
-      dispatch(toggleStatus(todoTask))
-      const updateTask: TodoTask = {
-        status: todoTask.status === 'completed' ? 'notStarted' : 'completed'
-      }
-      await patchTask(taskListId, todoTask.id, updateTask)
-    }
   } catch (e) {
     console.log(e)
   }

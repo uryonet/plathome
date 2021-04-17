@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Switch, useRouteMatch } from 'react-router-dom'
 import PrivateRoute from '../../lib/PrivateRoute'
-import { fetchTasks, fetchToggleStatus, selectTasks } from './tasksSlice'
+import { fetchTasks, fetchUpdateTask, selectTasks } from './tasksSlice'
 import Task from './Task'
 import { TodoTask } from 'microsoft-graph'
 import {
@@ -29,7 +29,9 @@ const Tasks: React.FC = () => {
   }, [dispatch])
 
   const handleClickToggle = (task: TodoTask) => () => {
-    dispatch(fetchToggleStatus(taskListId, task))
+    const updateTask = { ...task }
+    updateTask.status = task.status === 'completed' ? 'notStarted' : 'completed'
+    dispatch(fetchUpdateTask(taskListId, updateTask))
   }
 
   const renderTaskList = (completed: boolean) => {
