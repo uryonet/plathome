@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { fetchUpdateTask, selectTasks } from './tasksSlice'
+import { useHistory, useParams } from 'react-router-dom'
+import { fetchDelTask, fetchUpdateTask, selectTasks } from './tasksSlice'
 import { TodoTask } from 'microsoft-graph'
 import { Box, Button, Checkbox, createStyles, makeStyles, TextField } from '@material-ui/core'
 import { Delete, Send } from '@material-ui/icons'
@@ -25,6 +25,7 @@ const Task: React.FC = () => {
   const [currentTask, setCurrentTask] = useState<TodoTask>({})
   const [updateTask, setUpdateTask] = useState<TodoTask>({})
   const dispatch = useDispatch()
+  const history= useHistory()
   const styles = useStyles()
 
   useEffect(() => {
@@ -52,7 +53,10 @@ const Task: React.FC = () => {
   }
 
   const handleDelBtn = () => {
-    console.log('del button')
+    if (updateTask.id) {
+      dispatch(fetchDelTask(taskListId, updateTask.id))
+      history.goBack()
+    }
   }
 
   return (
