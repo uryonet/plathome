@@ -2,7 +2,7 @@ import { OnenotePage, OnenoteSection } from 'microsoft-graph'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
 import { AppThunk } from '../../app/store'
-import { getNotebook, postNotebook } from '../../lib/GraphService'
+import { getNotebook, getSections, postNotebook } from '../../lib/GraphService'
 
 type NotesState = {
   noteId: string
@@ -47,6 +47,15 @@ export const fetchNotebook = (): AppThunk => async (dispatch) => {
     if (notebooks[0].id) {
       dispatch(setNoteId(notebooks[0].id))
     }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchSections = (noteId: string): AppThunk => async (dispatch) => {
+  try {
+    const sections = await getSections(noteId)
+    dispatch(setSections(sections))
   } catch (e) {
     console.log(e)
   }

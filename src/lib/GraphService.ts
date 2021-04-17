@@ -1,6 +1,6 @@
 import * as graph from '@microsoft/microsoft-graph-client'
 import { getToken } from './AuthService'
-import { Notebook, TodoTask, TodoTaskList } from 'microsoft-graph'
+import { Notebook, OnenoteSection, TodoTask, TodoTaskList } from 'microsoft-graph'
 
 const getAuthClient = async () => {
   const token = await getToken()
@@ -53,4 +53,13 @@ export const postNotebook = async (): Promise<Notebook> => {
   const client = await getAuthClient()
   const newNote = { displayName: 'plathome' }
   return await client.api('/me/onenote/notebooks').post(newNote)
+}
+
+export const getSections = async (noteId: string): Promise<OnenoteSection[]> => {
+  const client = await getAuthClient()
+  const res = await client
+    .api('/me/onenote/notebooks/' + noteId + '/sections')
+    .select('id,displayName,createdDateTime')
+    .get()
+  return res.value
 }
