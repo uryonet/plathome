@@ -1,8 +1,8 @@
-import { OnenotePage, OnenoteSection } from 'microsoft-graph'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/rootReducer'
 import { AppThunk } from '../../app/store'
-import { getNotebook, getSections, postNotebook, postSection } from '../../lib/GraphService'
+import { getNotebook, getPages, getSections, postNotebook, postPage, postSection } from '../../lib/GraphService'
+import { OnenotePage, OnenoteSection } from 'microsoft-graph'
 
 type NotesState = {
   noteId: string
@@ -27,15 +27,18 @@ export const notesSlice = createSlice({
       state.sections = action.payload
     },
     addSection: (state, action: PayloadAction<OnenoteSection>) => {
-      state.sections.unshift(action.payload)
+      state.sections.push(action.payload)
     },
     setPages: (state, action: PayloadAction<OnenotePage[]>) => {
       state.pages = action.payload
+    },
+    addPage: (state, action: PayloadAction<OnenotePage>) => {
+      state.pages.push(action.payload)
     }
   }
 })
 
-export const { setNoteId, setSections, addSection, setPages } = notesSlice.actions
+export const { setNoteId, setSections, addSection, setPages, addPage } = notesSlice.actions
 export default notesSlice.reducer
 
 export const selectNotes = (state: RootState) => state.notes
@@ -68,6 +71,24 @@ export const fetchCreateSection = (noteId: string, sectionName: string): AppThun
   try {
     const createdSection = await postSection(noteId, sectionName)
     dispatch(addSection(createdSection))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchPages = (sectionId: string): AppThunk => async (dispatch) => {
+  try {
+    const pages = await getPages(sectionId)
+    dispatch(setPages(pages))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const fetchCreatePage = (sectionId: string, pageName: string): AppThunk => async (dispatch) => {
+  try {
+    const createdPage = await postPage(sectionId, pageName)
+    dispatch(addPage(createdPage))
   } catch (e) {
     console.log(e)
   }

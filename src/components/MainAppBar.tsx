@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { Link, Switch, useHistory } from 'react-router-dom'
+import PrivateRoute from '../lib/PrivateRoute'
+import NewTaskDialog from '../features/tasks/NewTaskDialog'
+import NewSectionDialog from '../features/notes/NewSectionDialog'
+import NewPageDialog from '../features/notes/NewPageDialog'
 import { useMsal } from '@azure/msal-react'
 import {
   AppBar,
@@ -15,9 +19,6 @@ import {
   Toolbar
 } from '@material-ui/core'
 import { ArrowBack, AssignmentTurnedIn, Home, Menu, MenuBook, MoreVert } from '@material-ui/icons'
-import PrivateRoute from '../lib/PrivateRoute'
-import NewTaskDialog from '../features/tasks/NewTaskDialog'
-import NewSectionDialog from '../features/notes/NewSectionDialog'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -39,6 +40,7 @@ const MainAppBar: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const [isShow, setIsShow] = useState(false)
+
   const toggleDrawer = (status: boolean) => () => {
     setIsShow(status)
   }
@@ -110,6 +112,14 @@ const MainAppBar: React.FC = () => {
             {menuList()}
           </SwipeableDrawer>
           <NewTaskDialog />
+        </PrivateRoute>
+        <PrivateRoute path="/notes/:sectionId">
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={() => history.goBack()}>
+              <ArrowBack />
+            </IconButton>
+          </Toolbar>
+          <NewPageDialog />
         </PrivateRoute>
         <PrivateRoute path="/notes">
           <Toolbar>

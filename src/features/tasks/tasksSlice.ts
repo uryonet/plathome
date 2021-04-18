@@ -25,7 +25,7 @@ export const tasksSlice = createSlice({
       state.tasks = action.payload
     },
     addTask: (state, action: PayloadAction<TodoTask>) => {
-      state.tasks.push(action.payload)
+      state.tasks.unshift(action.payload)
     },
     updateTask: (state, action: PayloadAction<TodoTask>) => {
       const index = state.tasks.findIndex((task) => task.id === action.payload.id)
