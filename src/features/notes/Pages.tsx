@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom'
 import { fetchPages, selectNotes } from './notesSlice'
+import { OnenoteSection } from 'microsoft-graph'
 import { List, ListItem, ListItemSecondaryAction, ListItemText, Paper } from '@material-ui/core'
 import { KeyboardArrowRight } from '@material-ui/icons'
 
@@ -14,10 +15,15 @@ const Pages: React.FC = () => {
   const match = useRouteMatch()
   const history = useHistory()
   const { sectionId } = useParams<ParamTypes>()
-  const { pages } = useSelector(selectNotes)
+  const { sections, pages } = useSelector(selectNotes)
+  const [currentSection, setCurrentSection] = useState<OnenoteSection>({})
 
   useEffect(() => {
     dispatch(fetchPages(sectionId))
+    const findSection = sections.find((section) => section.id === sectionId)
+    if (findSection) {
+      setCurrentSection(findSection)
+    }
   }, [dispatch, sectionId])
 
   const pagesList = pages.map((page) => (
@@ -31,6 +37,7 @@ const Pages: React.FC = () => {
 
   return (
     <React.Fragment>
+      <h1>{currentSection.displayName}</h1>
       <h4>ページ</h4>
       <Paper square>
         <List>{pagesList}</List>

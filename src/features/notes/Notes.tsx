@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useRouteMatch, Switch } from 'react-router-dom'
 import PrivateRoute from '../../lib/PrivateRoute'
+import Pages from './Pages'
 import { fetchNotebook, fetchSections, selectNotes } from './notesSlice'
 import { Box, List, ListItem, ListItemSecondaryAction, ListItemText, Paper } from '@material-ui/core'
 import { KeyboardArrowRight } from '@material-ui/icons'
-import Pages from './Pages'
 
 const Notes: React.FC = () => {
   const dispatch = useDispatch()
