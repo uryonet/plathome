@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCreatePage, fetchCreateSection, selectNotes } from './notesSlice'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { fetchCreatePage } from './notesSlice'
 import {
   Button,
   Dialog,
@@ -12,7 +13,6 @@ import {
   TextField
 } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
-import { useParams } from 'react-router-dom'
 
 interface ParamsType {
   sectionId: string
